@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class STaskAdd(BaseModel):
@@ -12,6 +12,7 @@ class STaskGet(STaskAdd):
 
 class STask(STaskAdd):
     id: int
+    model_config = ConfigDict()
 
 
 class STaskId(BaseModel):

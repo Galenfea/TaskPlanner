@@ -14,19 +14,11 @@ class TaskRepository:
             await session.commit()
             return task.id
 
-    @staticmethod
-    def orm_to_dict(task_model: TasksOrm) -> dict:
-        return {
-            "id": task_model.id,
-            "name": task_model.name,
-            "description": task_model.description,
-        }
-
     @classmethod
     async def find_all(cls) -> list[STask]:
         async with new_session() as session:
             query = select(TasksOrm)
             result = await session.execute(query)
             task_models = result.scalars().all()
-            task_schemas = [STask.model_validate(cls.orm_to_dict(task_model)) for task_model in task_models]
+            task_schemas = [STask.model_validate(task_model) for task_model in task_models]
             return task_schemas
